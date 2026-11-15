@@ -1,0 +1,16 @@
+{
+  "name": "adcopilot-retail-media-plugin",
+  "description": "AdCopilot Retail Media works with Amazon Ads: Amazon Attribution checks on the Google Ads ads that send shoppers to Amazon, Amazon Ad Tag checks in Google Tag Manager, Amazon-sourced visits in Google Analytics (GA4), campaign plans, headlines and ACOS math. We are an independent service provider and are not affiliated with or endorsed by Amazon.",
+  "owner": {
+    "name": "Atromx Intelligence",
+    "url": "https://adcopilot.cloud"
+  },
+  "plugins": [
+    {
+      "name": "adcopilot-retail-media",
+      "source": "./",
+      "description": "Works with Amazon Ads: Amazon Attribution checks on Google Ads ads that point to Amazon, Amazon Ad Tag checks in Google Tag Manager, Amazon-sourced visits in Google Analytics (GA4), Sponsored Products, Sponsored Brands and display ads plans, headlines and ACOS, TACOS and budget math. It does not read your Amazon Ads account. We are an independent service provider and are not affiliated with or endorsed by Amazon.",
+      "category": "Marketing"
+    }
+  ]
+}

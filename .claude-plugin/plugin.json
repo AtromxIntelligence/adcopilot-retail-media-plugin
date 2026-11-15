@@ -1,0 +1,34 @@
+{
+  "name": "adcopilot-retail-media",
+  "version": "0.1.0",
+  "description": "Retail media help in your AI client, through AdCopilot. It works with Amazon Ads: it checks that the Google Ads ads that send shoppers to your Amazon listings carry an Amazon Attribution tag, checks your Amazon Ad Tag in Google Tag Manager, reports Amazon-sourced visits in Google Analytics (GA4), plans Sponsored Products and Sponsored Brands campaigns and display ads, drafts Sponsored Brands headlines and does the ACOS, TACOS and budget math. It does not read your Amazon Ads account. Every change is proposed first and made only on your yes. Made by Atromx Intelligence. We are an independent service provider and are not affiliated with or endorsed by Amazon.",
+  "author": {
+    "name": "Atromx Intelligence",
+    "url": "https://adcopilot.cloud"
+  },
+  "homepage": "https://adcopilot.cloud",
+  "documentationUrl": "https://adcopilot.cloud/docs/",
+  "privacyPolicyUrl": "https://adcopilot.cloud/privacy",
+  "termsOfServiceUrl": "https://adcopilot.cloud/terms",
+  "supportUrl": "https://adcopilot.cloud/contact",
+  "repository": "https://github.com/AtromxIntelligence/adcopilot-retail-media-plugin",
+  "license": "MIT",
+  "keywords": [
+    "retail-media",
+    "amazon-ads",
+    "amazon-attribution",
+    "amazon-ad-tag",
+    "sponsored-products",
+    "sponsored-brands",
+    "display-ads",
+    "acos",
+    "google-ads",
+    "google-analytics",
+    "ga4",
+    "google-tag-manager",
+    "campaign-planning",
+    "adcopilot"
+  ],
+  "displayName": "AdCopilot Retail Media",
+  "icon": "./.claude-plugin/icon.png"
+}
