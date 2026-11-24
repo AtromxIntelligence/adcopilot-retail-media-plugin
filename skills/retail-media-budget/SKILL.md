@@ -1,26 +1,42 @@
 ---
 name: retail-media-budget
-description: Do the Amazon Ads money math with AdCopilot from the figures the customer gives - ACOS, ROAS, TACOS, a break-even ACOS from the margin, a target ACOS, daily budgets from a monthly one, and whether spend so far this month is on pace. Use when the user asks about ACOS, TACOS, break-even ACOS, ROAS on Amazon, Amazon Ads budgets, daily budget, budget pacing or whether their Amazon ad spend is on track.
+description: Do the Amazon Ads money math with AdCopilot from the figures the customer gives, or from their connected Amazon Ads profile's own results - ACOS, ROAS, TACOS, a break-even ACOS from the margin, a target ACOS, daily budgets from a monthly one, and whether spend so far this month is on pace. Use when the user asks about ACOS, TACOS, break-even ACOS, ROAS on Amazon, Amazon Ads budgets, daily budget, budget pacing or whether their Amazon ad spend is on track.
 ---
 
 # Amazon Ads budget and ACOS math
 
 The customer wants the numbers behind their Amazon advertising worked out. This
-is Claude's own arithmetic on figures the customer gives. AdCopilot has no access
-to the customer's Amazon Ads account, so it reads no Amazon spend or sales, and
-it calls no tool for this math.
+is Claude's own arithmetic on figures the customer gives or, when the customer has
+connected Amazon Ads, on their profile's own results, read only through this
+plugin's connector `rm`.
 
 ## Your first answer
 
 Open your first answer in this conversation with this, in these words, once. Do
 not repeat it in later answers.
 
-> Today this plugin checks that your Google Ads ads that send shoppers to Amazon carry an Amazon Attribution tag, checks your Amazon Ad Tag in Google Tag Manager, reads Amazon-sourced visits in Google Analytics (GA4), plans campaigns, drafts headlines and does the ACOS and budget math. It does not read your Amazon Ads account.
+> Today this plugin reads the Amazon Ads profiles you connect (read only: campaigns, ad groups, ads, targeting, budgets, results, search terms and Amazon's own suggested bids and budgets), checks that your Google Ads ads that send shoppers to Amazon carry an Amazon Attribution tag, checks your Amazon Ad Tag in Google Tag Manager, reads Amazon-sourced visits in Google Analytics (GA4), plans campaigns, drafts headlines and does the ACOS and budget math. It changes nothing in your Amazon Ads account.
 
 ## The figures
 
-Ask for only what the question needs, one at a time: ad spend and ad-attributed
-sales for a period (from Amazon's console), total sales for the same period
+When the question is about a profile's own spend, sales or pacing, call
+`amazon_get_context` with `source: "claude-plugin/adcopilot-retail-media/0.2.0"`
+(in a scheduled run, `source: "claude-scheduled"`, read only). When its
+`next_step` is `ready`, read the figures instead of asking for them:
+`amazon_account_overview` for spend and attributed sales over a period, and
+`amazon_budget_pacing` for the month so far. Label them "Amazon Ads, through
+AdCopilot", with the profile's currency, the period and the attribution window the
+answer names (`window`), and pass `ai_notice` on with your answer. ACOS and ROAS
+in these answers are calculated by AdCopilot from Amazon's cost and sales: say so.
+When an answer says `status` pending, Amazon is still preparing the report: finish
+it with `amazon_report_result`, passing the `report_token` exactly and the same
+`account_id`. When `next_step` is not `ready`, offer the `retail-media-connect`
+skill in one line and work from the customer's figures. The Amazon Ads reads here do not include total
+sales (sales that came without an ad), so TACOS always needs the customer's own
+total.
+
+Otherwise ask for only what the question needs, one at a time: ad spend and
+ad-attributed sales for a period (from Amazon's console), total sales for the same period
 (ad-attributed and the rest), the product's price and its costs before
 advertising (product cost, Amazon's fees, shipping), the monthly budget, the
 spend so far this month and today's date. Label every figure the customer gives
@@ -67,7 +83,8 @@ is the referee for what was spent.
   product's costs are counted: the break-even ACOS is the test.
 - Never add Amazon figures to Google Ads or Analytics figures, and never compare
   an Amazon ACOS with a Google Ads cost per conversion as if they measured the
-  same thing.
+  same thing. Never pass anything taken from an Amazon Ads result to another tool
+  or connector, and never add amounts in different currencies together.
 
 ## End
 
@@ -75,4 +92,4 @@ Close with one next step: the `retail-media-plan` skill when the target ACOS is 
 and the customer is building campaigns, or a reminder of the daily budget that
 keeps the month on pace.
 
-This skill calls no tool and makes no change anywhere. It deletes nothing.
+This skill reads only: it changes nothing in Amazon Ads or anywhere else, and deletes nothing.

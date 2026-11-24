@@ -9,20 +9,21 @@ The customer wants to know whether Amazon's tag is in place on their own website
 the tag Amazon uses to count conversions and build audiences from visits to sites
 outside Amazon. This skill reads their Google Tag Manager through the AdCopilot
 connector at `https://mcp.adcopilot.cloud/mcp` and, on their yes, stages tags
-there. AdCopilot has no access to the customer's Amazon Ads account and reads no
-Amazon figure; the tag is checked from the tags in Tag Manager, and what only
-Amazon's own screens can show is named below.
+there. It reads no Amazon figure: the tag is checked from the tags in Tag Manager,
+and what only Amazon's own screens can show is named below. The Amazon Ads
+connector (`rm`) does not read Amazon's tag screens, so this check never calls it,
+and nothing taken from an Amazon Ads result goes into a Tag Manager tool.
 
 ## Your first answer
 
 Open your first answer in this conversation with this, in these words, once. Do
 not repeat it in later answers.
 
-> Today this plugin checks that your Google Ads ads that send shoppers to Amazon carry an Amazon Attribution tag, checks your Amazon Ad Tag in Google Tag Manager, reads Amazon-sourced visits in Google Analytics (GA4), plans campaigns, drafts headlines and does the ACOS and budget math. It does not read your Amazon Ads account.
+> Today this plugin reads the Amazon Ads profiles you connect (read only: campaigns, ad groups, ads, targeting, budgets, results, search terms and Amazon's own suggested bids and budgets), checks that your Google Ads ads that send shoppers to Amazon carry an Amazon Attribution tag, checks your Amazon Ad Tag in Google Tag Manager, reads Amazon-sourced visits in Google Analytics (GA4), plans campaigns, drafts headlines and does the ACOS and budget math. It changes nothing in your Amazon Ads account.
 
 ## Start
 
-Call `get_org_context` with `source: "claude-plugin/adcopilot-retail-media/0.1.0"`
+Call `get_org_context` with `source: "claude-plugin/adcopilot-retail-media/0.2.0"`
 first, before any other tool. Send `source` exactly as written. In a scheduled run
 (a Claude scheduled task or routine with nobody there to answer; this plugin
 schedules nothing, but one may exist) send `source: "claude-scheduled"` instead,
