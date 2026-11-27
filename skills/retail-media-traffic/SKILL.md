@@ -10,22 +10,24 @@ Analytics (GA4) counts it. That is the traffic from Amazon ads whose landing pag
 is the customer's site, such as Amazon DSP ads pointed there, and any other link
 they tag as Amazon. This skill reads their Analytics
 property through the AdCopilot connector at `https://mcp.adcopilot.cloud/mcp`.
-It reads Analytics only. AdCopilot has no access to the customer's Amazon Ads
-account, so it has no Amazon impressions, clicks, spend or sales, and it never
-states one. Sponsored Products and Sponsored Brands ads send shoppers to pages on
-Amazon, and display ads (formerly Sponsored Display) usually do too, so
-Analytics never sees those clicks: say so when the customer asks about them.
+It reads Analytics only, so it has no Amazon impressions, clicks, spend or sales,
+and it never states one. The Amazon Ads profiles the customer connects are read by
+the `retail-media-review` skill, on their own: never in this answer, and never
+beside these Analytics figures. Sponsored Products and Sponsored Brands ads send
+shoppers to pages on Amazon, and display ads (formerly Sponsored Display) usually
+do too, so Analytics never sees those clicks: say so when the customer asks about
+them.
 
 ## Your first answer
 
 Open your first answer in this conversation with this, in these words, once. Do
 not repeat it in later answers.
 
-> Today this plugin checks that your Google Ads ads that send shoppers to Amazon carry an Amazon Attribution tag, checks your Amazon Ad Tag in Google Tag Manager, reads Amazon-sourced visits in Google Analytics (GA4), plans campaigns, drafts headlines and does the ACOS and budget math. It does not read your Amazon Ads account.
+> Today this plugin reads the Amazon Ads profiles you connect (read only: campaigns, ad groups, ads, targeting, budgets, results, search terms and Amazon's own suggested bids and budgets), checks that your Google Ads ads that send shoppers to Amazon carry an Amazon Attribution tag, checks your Amazon Ad Tag in Google Tag Manager, reads Amazon-sourced visits in Google Analytics (GA4), plans campaigns, drafts headlines and does the ACOS and budget math. It changes nothing in your Amazon Ads account.
 
 ## Start
 
-Call `get_org_context` with `source: "claude-plugin/adcopilot-retail-media/0.1.0"`
+Call `get_org_context` with `source: "claude-plugin/adcopilot-retail-media/0.2.0"`
 first, before any other tool. Send `source` exactly as written. In a scheduled run
 (a Claude scheduled task or routine with nobody there to answer; this plugin
 schedules nothing, but one may exist) send `source: "claude-scheduled"` instead,
@@ -114,6 +116,12 @@ Amazon's impressions, clicks, spend and sales; anything a shopper does on Amazon
 itself; visits that never reached Analytics, such as those blocked by a visitor's
 consent choice or an ad blocker; and any Amazon audience or campaign setting. Say
 which of these matters to the question asked.
+
+Amazon Ads figures are reported on their own. Never add a result of the Amazon Ads
+connector (`rm`) to, compare it with, or put it in one table with the Analytics
+figures here, and never pass anything taken from one to an Analytics tool. If the
+customer wants their Amazon Ads campaigns' own results, offer the
+`retail-media-review` skill, as a separate answer.
 
 ## End
 

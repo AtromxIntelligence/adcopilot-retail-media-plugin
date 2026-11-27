@@ -1,25 +1,26 @@
 ---
 name: retail-media-plan
-description: Plan an Amazon Ads launch or restructure with AdCopilot - Sponsored Products, Sponsored Brands and display ads (formerly Sponsored Display) campaign structure, match types, product targets, negatives, a search-term harvesting routine and Sponsored Brands headline drafts - from the customer's own business profile and what they tell you. Use when the user asks to plan Amazon Ads or Amazon PPC campaigns, structure Sponsored Products, choose keywords or match types for Amazon, write Sponsored Brands headlines, or set up auto and manual campaigns.
+description: Plan an Amazon Ads launch or restructure with AdCopilot - Sponsored Products, Sponsored Brands and display ads (formerly Sponsored Display) campaign structure, match types, product targets, negatives, a search-term harvesting routine and Sponsored Brands headline drafts - from the customer's own business profile, what they tell you and, when they have connected it, a read-only look at their current Amazon Ads campaigns. Use when the user asks to plan Amazon Ads or Amazon PPC campaigns, structure Sponsored Products, choose keywords or match types for Amazon, write Sponsored Brands headlines, or set up auto and manual campaigns.
 ---
 
 # Amazon Ads campaign plan
 
 The customer wants a plan for advertising their products on Amazon. This is
-Claude's own work, written from the customer's saved business profile and what
-they tell you. AdCopilot has no access to the customer's Amazon Ads account, so
-the plan creates nothing on Amazon: the customer builds it in Amazon's console.
+Claude's own work, written from the customer's saved business profile, what they
+tell you and, when they have connected Amazon Ads, a read-only look at the campaigns
+they run today. The plan creates nothing on Amazon: the customer builds it in
+Amazon's console.
 
 ## Your first answer
 
 Open your first answer in this conversation with this, in these words, once. Do
 not repeat it in later answers.
 
-> Today this plugin checks that your Google Ads ads that send shoppers to Amazon carry an Amazon Attribution tag, checks your Amazon Ad Tag in Google Tag Manager, reads Amazon-sourced visits in Google Analytics (GA4), plans campaigns, drafts headlines and does the ACOS and budget math. It does not read your Amazon Ads account.
+> Today this plugin reads the Amazon Ads profiles you connect (read only: campaigns, ad groups, ads, targeting, budgets, results, search terms and Amazon's own suggested bids and budgets), checks that your Google Ads ads that send shoppers to Amazon carry an Amazon Attribution tag, checks your Amazon Ad Tag in Google Tag Manager, reads Amazon-sourced visits in Google Analytics (GA4), plans campaigns, drafts headlines and does the ACOS and budget math. It changes nothing in your Amazon Ads account.
 
 ## Start
 
-Call `get_org_context` with `source: "claude-plugin/adcopilot-retail-media/0.1.0"`
+Call `get_org_context` with `source: "claude-plugin/adcopilot-retail-media/0.2.0"`
 first, before any other tool, to read the business profile the customer saved
 in AdCopilot. Send `source` exactly as written. In a scheduled run send
 `source: "claude-scheduled"` instead, read only, and change nothing.
@@ -31,6 +32,16 @@ customer; mention anything else they name in one line at the end.
 
 Use only business facts the profile holds or the customer says. Never invent a
 product, a price, a margin, a competitor or a result.
+
+For a restructure, read what runs today when the customer has connected Amazon Ads.
+Call `amazon_get_context` with the same `source`. When its `next_step` is `ready`,
+read the profile the customer names with `amazon_campaigns`, `amazon_ad_groups` and
+`amazon_targets` (read only), and build the plan on that structure. When it is not
+`ready`, say so in one line, offer the `retail-media-connect` skill, and plan from
+what the customer tells you. Pass `ai_notice` on whenever you answer from an Amazon
+Ads result. Never pass anything taken from an Amazon Ads result to another tool or
+connector: never save it to the business profile, and never use it in a Google
+tool. Never put Google Ads figures in the plan beside Amazon Ads ones.
 
 ## Ask first, one question at a time
 
@@ -81,7 +92,9 @@ Propose a weekly routine, as the customer's own steps in Amazon's console: read
 the discovery campaign's search terms; move a term that sold at an acceptable
 ACOS to the exact campaign; add a term that spent and never sold as a negative;
 and change bids by small steps against the target ACOS. Say that results from
-the last few days can still change in Amazon's reports.
+the last few days can still change in Amazon's reports. With Amazon Ads connected,
+the `retail-media-review` skill finds the candidates each week (keyword harvest and
+wasted spend), read only; the customer makes the changes in Amazon's console.
 
 ## Sponsored Brands headlines
 
@@ -96,10 +109,11 @@ Draft five headlines for each brand campaign:
 
 ## What this cannot do
 
-Read the customer's Amazon Ads account, their search terms, bids, sales or
-ACOS; build or change a campaign on Amazon; or check an ad against Amazon's
-policies. If the customer pastes figures from Amazon's console, label them "from
-you, Amazon Ads" and plan from them, never adding them to any Google figure.
+Build or change a campaign on Amazon, or check an ad against Amazon's policies.
+Without Amazon Ads connected, it cannot read the customer's search terms, bids,
+sales or ACOS either. If the customer pastes figures from Amazon's console, label
+them "from you, Amazon Ads" and plan from them, never adding them to any Google
+figure.
 
 ## End
 
